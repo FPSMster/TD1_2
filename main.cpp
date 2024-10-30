@@ -1,12 +1,48 @@
 #include <Novice.h>
+#define _USE_MATH_DEFINES
+#include<math.h>
+#include<time.h>
 
 const char kWindowTitle[] = "GC1B 03 クドウ　マコト　タイトル";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
-
+	
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, 1280, 720);
+
+	srand(unsigned int(time(nullptr)));
+
+	struct Vector2{
+		float x;
+		float y;
+	};
+
+	struct Player{
+		Vector2 pos;
+		float speed;
+		Vector2 velocity;
+	};
+
+	Player player{
+		{100.0f,500.0f},
+		{10.0f},
+		{0.0f,0.0f}
+	};
+
+	Player attack[6];
+	struct Enemy{
+		Vector2 pos;
+		float speed;
+		Vector2 velocity;
+	};
+
+	Enemy enemy{
+		{1000.0f,360.0f},
+		{5.0f},
+		{0.0f,0.0f,}
+	};
+
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
