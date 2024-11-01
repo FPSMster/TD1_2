@@ -22,6 +22,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		Vector2 pos;
 		float speed;
 		Vector2 velocity;
+		bool isBulletShot;
 	};
 
 	Player player{
@@ -31,19 +32,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	};
 
 	Player attack[6];
+	for (int i = 0; i < 6; i++) {
+		attack[i].pos.x = 100.0f;
+		attack[i].pos.y = 500.0f;
+		attack[i].speed = 15.0f;
+		attack[i].isBulletShot = false;
+
+	}
 	struct Enemy{
 		Vector2 pos;
 		float speed;
 		Vector2 velocity;
+		bool isAlive;
+		bool isBulletShot;
 	};
 
 	Enemy enemy{
 		{1000.0f,360.0f},
 		{5.0f},
-		{0.0f,0.0f,}
+		{0.0f,0.0f,},
+		{true}
 	};
 
-
+	Enemy enemyAttack[20];
+	for (int i = 0; i < 20; i++) {
+		enemyAttack[i].pos.x = 1000.0f;
+		enemyAttack[i].pos.y = 360.0f;
+		enemyAttack[i].speed = 20.0f;
+		enemyAttack[i].isBulletShot = false;
+	}
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
