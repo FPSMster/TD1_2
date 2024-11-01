@@ -47,6 +47,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		bool isBulletShot;
 	};
 
+	int life = 3;
+	int enemyLife = 100;
+	int level = 0;
+
 	Enemy enemy{
 		{1000.0f,360.0f},
 		{5.0f},
@@ -61,6 +65,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		enemyAttack[i].speed = 20.0f;
 		enemyAttack[i].isBulletShot = false;
 	}
+
+	enum Shene {
+		TITLE,
+		GAME,
+		CLEAR,
+		GAMEOVER
+	};
+	int gameShene = TITLE;
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
@@ -77,7 +89,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
+		switch (gameShene){
+		case TITLE:
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = GAME;
+			}
+			break;
 
+		case GAME:
+			if (enemyLife <= 0) {
+				gameShene = CLEAR;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
+			}
+			break;
+		case CLEAR:
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = TITLE;
+			}
+			break;
+		case GAMEOVER:
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = TITLE;
+			}
+			break;
+		}
 
 
 		///
