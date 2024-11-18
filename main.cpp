@@ -76,18 +76,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//敵のスポーン
 	
-	enum Boss {
+	/*enum Boss {
 		Boss1,
 		Boss2,
 		Boss3,
 		Boss4,
 		Boss5
 	};
-	int appearEnemy = Boss1;
+	int appearEnemy = Boss1;*/
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
+
+	int doragonhandle = Novice::LoadTexture("./Resources/doragon.png");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -110,76 +112,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		case GAME:
 			
-				//プレイヤーが死ぬまでボスが出る
-				switch (appearEnemy){
+
 				
-				case Boss1:
-					if (enemy.isAlive == false) {
-						enemy.isAlive = true;
-						enemyLife = 100;
-					}
-
-					if (enemyLife <= 0) {
-						enemy.isAlive = false;
-					}
-					if (enemy.isAlive == false) {
-						appearEnemy = Boss2;
-					}
-					break;
-				case Boss2:
-					if (enemy.isAlive == false) {
-						enemy.isAlive = true;
-						enemyLife = 100;
-					}
-
-					if (enemyLife <= 0) {
-						enemy.isAlive = false;
-					}
-					if (enemy.isAlive == false) {
-						appearEnemy = Boss3;
-					}
-
-					break;
-				case Boss3:
-					if (enemy.isAlive == false) {
-						enemy.isAlive = true;
-						enemyLife = 100;
-					}
-
-					if (enemyLife <= 0) {
-						enemy.isAlive = false;
-					}
-					if (enemy.isAlive == false) {
-						appearEnemy = Boss4;
-					}
-					break;
-				case Boss4:
-					if (enemy.isAlive == false) {
-						enemy.isAlive = true;
-						enemyLife = 100;
-					}
-
-					if (enemyLife <= 0) {
-						enemy.isAlive = false;
-					}
-					if (enemy.isAlive == false) {
-						appearEnemy = Boss5;
-					}
-					break;
-				case Boss5:
-					if (enemy.isAlive == false) {
-						enemy.isAlive = true;
-						enemyLife = 100;
-					}
-
-					if (enemyLife <= 0) {
-						enemy.isAlive = false;
-					}
-					if (enemy.isAlive == false) {
-						appearEnemy = Boss1;
-					}
-					break;
-				}
 
 			
 
@@ -217,35 +151,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAME:
-			while (life != 0) {
-				//プレイヤーが死ぬまでボスが出る
-				switch (appearEnemy) {
+			
 
-				case Boss1:
-					
-					break;
-				case Boss2:
-					
-					break;
-				case Boss3:
-					
-					break;
-				case Boss4:
-					
-					break;
-				case Boss5:
-					
-					break;
-				}
+			Novice::ScreenPrintf(0, 0, "GAME");
 
-			}
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x), static_cast<int>(enemy.pos.y), doragonhandle, 1.0f, 1.0f, 0.0f, WHITE);
 
-			if (enemyLife <= 0) {
-				gameShene = CLEAR;
-			}
-			if (life <= 0) {
-				gameShene = GAMEOVER;
-			}
 			break;
 		case CLEAR:
 			
