@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	int life = 3;
 	int enemyLife = 100;
-	int level = 0;
+	//int level = 0;
 
 	Enemy enemy{
 		{1000.0f,360.0f},
@@ -74,19 +74,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	};
 	int gameShene = TITLE;
 
-	//敵のランダムスポーン
-	unsigned int currentTime = static_cast<unsigned int>(time(nullptr));
-	srand(currentTime);
-	int enemySpawn = rand() % 5 + 1;
+	//敵のスポーン
+	
 	enum Boss {
-		enemyLottery,
 		Boss1,
 		Boss2,
 		Boss3,
 		Boss4,
 		Boss5
 	};
-	int appearEnemy = enemyLottery;
+	int appearEnemy = Boss1;
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -112,53 +109,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAME:
-			while (life !=0){
+			
 				//プレイヤーが死ぬまでボスが出る
 				switch (appearEnemy){
-				case enemyLottery:
-					enemySpawn = rand() % 5 + 1;
-
-					if (enemySpawn == 1) {
-						appearEnemy = Boss1;
-					} else if (enemySpawn == 2) {
-						appearEnemy = Boss2;
-					} else if (enemySpawn == 3) {
-						appearEnemy = Boss3;
-					} else if (enemySpawn == 4) {
-						appearEnemy = Boss4;
-					} else if (enemySpawn == 5) {
-						appearEnemy = Boss5;
-					}
-
-					break;
+				
 				case Boss1:
 					if (enemyLife <= 0) {
-						appearEnemy = enemyLottery;
+						appearEnemy = Boss2;
 					}
 					break;
 				case Boss2:
 					if (enemyLife <= 0) {
-						appearEnemy = enemyLottery;
+						appearEnemy = Boss3;
 					}
 					break;
 				case Boss3:
 					if (enemyLife <= 0) {
-						appearEnemy = enemyLottery;
+						appearEnemy = Boss4;
 					}
 					break;
 				case Boss4:
 					if (enemyLife <= 0) {
-						appearEnemy = enemyLottery;
+						appearEnemy = Boss5;
 					}
 					break;
 				case Boss5:
 					if (enemyLife <= 0) {
-						appearEnemy = enemyLottery;
+						appearEnemy = Boss1;
 					}
 					break;
 				}
 
-			}
+			
 
 			if (enemyLife <= 0) {
 				gameShene = CLEAR;
@@ -188,7 +170,49 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		
+		switch (gameShene) {
+		case TITLE:
+			Novice::ScreenPrintf(0, 0, "TITLE");
+			break;
 
+		case GAME:
+			while (life != 0) {
+				//プレイヤーが死ぬまでボスが出る
+				switch (appearEnemy) {
+
+				case Boss1:
+					
+					break;
+				case Boss2:
+					
+					break;
+				case Boss3:
+					
+					break;
+				case Boss4:
+					
+					break;
+				case Boss5:
+					
+					break;
+				}
+
+			}
+
+			if (enemyLife <= 0) {
+				gameShene = CLEAR;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
+			}
+			break;
+		case CLEAR:
+			
+			break;
+		case GAMEOVER:
+			
+			break;
+		}
 
 		///
 		/// ↑描画処理ここまで
