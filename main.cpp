@@ -114,27 +114,68 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				switch (appearEnemy){
 				
 				case Boss1:
+					if (enemy.isAlive == false) {
+						enemy.isAlive = true;
+						enemyLife = 100;
+					}
+
 					if (enemyLife <= 0) {
+						enemy.isAlive = false;
+					}
+					if (enemy.isAlive == false) {
 						appearEnemy = Boss2;
 					}
 					break;
 				case Boss2:
+					if (enemy.isAlive == false) {
+						enemy.isAlive = true;
+						enemyLife = 100;
+					}
+
 					if (enemyLife <= 0) {
+						enemy.isAlive = false;
+					}
+					if (enemy.isAlive == false) {
 						appearEnemy = Boss3;
 					}
+
 					break;
 				case Boss3:
+					if (enemy.isAlive == false) {
+						enemy.isAlive = true;
+						enemyLife = 100;
+					}
+
 					if (enemyLife <= 0) {
+						enemy.isAlive = false;
+					}
+					if (enemy.isAlive == false) {
 						appearEnemy = Boss4;
 					}
 					break;
 				case Boss4:
+					if (enemy.isAlive == false) {
+						enemy.isAlive = true;
+						enemyLife = 100;
+					}
+
 					if (enemyLife <= 0) {
+						enemy.isAlive = false;
+					}
+					if (enemy.isAlive == false) {
 						appearEnemy = Boss5;
 					}
 					break;
 				case Boss5:
+					if (enemy.isAlive == false) {
+						enemy.isAlive = true;
+						enemyLife = 100;
+					}
+
 					if (enemyLife <= 0) {
+						enemy.isAlive = false;
+					}
+					if (enemy.isAlive == false) {
 						appearEnemy = Boss1;
 					}
 					break;
