@@ -260,7 +260,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				static_cast<int>(enemy.pos.y - 64.0f), goburinhanndle, 1.0f, 1.0f, 0.0f, WHITE);
 			//子供
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f-200.0f),
-				static_cast<int>(enemy.pos.y - 64.0f), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
+				static_cast<int>(enemy.pos.y ), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			break;
 		case GAMErizadoman:
