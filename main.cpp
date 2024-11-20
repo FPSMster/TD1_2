@@ -74,6 +74,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	};
 	int gameShene = TITLE;
 
+	//敵の動き
+	float theta = float(M_PI) / 30.0f;
+	//float amplitude = 300.0f;
+	float move = -500.0f;
+
 	//敵のスポーン
 	
 	/*enum Boss {
@@ -111,11 +116,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAME:
-			
-
+			if (theta <= 5*float(M_PI)) {
+				theta += float(M_PI) / 150.0f;
+				enemy.pos.y = (4 / float(M_PI) * sinf(theta) +
+					4 / 3 * float(M_PI) * sinf(3 * theta) + 4 / 5 * float(M_PI) * sinf(5 * theta)) * 50 + 360.0f;
+				//sinf(theta)* amplitude + 360.0f;
+			} else {
+				enemy.pos.x += move;
+				move = -move;
+				theta = 0.0f;
 				
-
-			
+			}
 
 			if (enemyLife <= 0) {
 				gameShene = CLEAR;
@@ -155,7 +166,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::ScreenPrintf(0, 0, "GAME");
 
-			Novice::DrawSprite(static_cast<int>(enemy.pos.x), static_cast<int>(enemy.pos.y), doragonhandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x -64.0f),
+				static_cast<int>(enemy.pos.y-64.0f), doragonhandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			break;
 		case CLEAR:
