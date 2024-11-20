@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	};
 
 	int life = 3;
-	int enemyLife = 100;
+	/*int enemyLife = 100;*/
 	//int level = 0;
 
 	Enemy enemy{
@@ -68,7 +68,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	enum Shene {
 		TITLE,
-		GAME,
+		GAMEdoragon,
+		GAMEookami,
+		GAMEgoburinn,
+		GAMErizadoman,
 		CLEAR,
 		GAMEOVER
 	};
@@ -95,6 +98,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = {0};
 
 	int doragonhandle = Novice::LoadTexture("./Resources/doragon.png");
+	int ookamihandle = Novice::LoadTexture("./Resources/ookami.png");
+	int goburinhanndle = Novice::LoadTexture("./Resources/goburinn.png");
+	int rizadomanhandle = Novice::LoadTexture("./Resources/reza-doman.png");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -111,29 +117,59 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		switch (gameShene){
 		case TITLE:
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
-				gameShene = GAME;
+				gameShene = GAMEdoragon;
 			}
 			break;
 
-		case GAME:
+		case GAMEdoragon:
+
+			///ドラゴンの処理
+
 			if (theta <= 5*float(M_PI)) {
 				theta += float(M_PI) / 150.0f;
 				enemy.pos.y = (4 / float(M_PI) * sinf(theta) +
 					4 / 3 * float(M_PI) * sinf(3 * theta) + 4 / 5 * float(M_PI) * sinf(5 * theta)) * 50 + 360.0f;
-				//sinf(theta)* amplitude + 360.0f;
+			
 			} else {
+
 				enemy.pos.x += move;
 				move = -move;
 				theta = 0.0f;
 				
 			}
 
-			if (enemyLife <= 0) {
-				gameShene = CLEAR;
+
+			///
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = GAMEookami;
 			}
+
+
+			/*if (enemyLife <= 0) {
+				gameShene = CLEAR;
+			}*/
 			if (life <= 0) {
 				gameShene = GAMEOVER;
 			}
+			break;
+		case GAMEookami:
+			//狼
+			enemy.pos.y = 650.0f;
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = GAMEgoburinn;
+			}
+
+			break;
+		case GAMEgoburinn:
+			//ゴブリン
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = GAMErizadoman;
+			}
+
+			break;
+		case GAMErizadoman:
+			//リザードマン
+
 			break;
 		case CLEAR:
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -161,14 +197,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "TITLE");
 			break;
 
-		case GAME:
+		case GAMEdoragon:
 			
 
-			Novice::ScreenPrintf(0, 0, "GAME");
+			Novice::ScreenPrintf(0, 0, "DORAGON");
 
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x -64.0f),
 				static_cast<int>(enemy.pos.y-64.0f), doragonhandle, 1.0f, 1.0f, 0.0f, WHITE);
 
+			break;
+		case GAMEookami:
+			//狼
+			Novice::ScreenPrintf(0, 0, "OOKAMI");
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
+			break;
+		case GAMEgoburinn:
+			//ゴブリン
+			Novice::ScreenPrintf(0, 0, "GOBURINN");
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), goburinhanndle, 1.0f, 1.0f, 0.0f, WHITE);
+			break;
+		case GAMErizadoman:
+			//リザードマン
+			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 		case CLEAR:
 			
