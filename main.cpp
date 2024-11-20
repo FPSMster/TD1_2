@@ -72,6 +72,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		GAMEookami,
 		GAMEgoburinn,
 		GAMErizadoman,
+		GAMEdoragon2,
 		CLEAR,
 		GAMEOVER
 	};
@@ -81,7 +82,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	float theta = float(M_PI) / 30.0f;
 	//float amplitude = 300.0f;
 	float move = -500.0f;
+	int motionCount = 0;
 
+	enemy.velocity.x = 5.0f;
+	unsigned int currentTime = static_cast<unsigned int>(time(nullptr));
+	srand(currentTime);
+	int randX = rand() % 21 - 10;
 	//敵のスポーン
 	
 	/*enum Boss {
@@ -101,6 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int ookamihandle = Novice::LoadTexture("./Resources/ookami.png");
 	int goburinhanndle = Novice::LoadTexture("./Resources/goburinn.png");
 	int rizadomanhandle = Novice::LoadTexture("./Resources/reza-doman.png");
+	int doragon2handle = Novice::LoadTexture("./Resources/doragon2.png");
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -152,14 +159,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameShene = GAMEOVER;
 			}
 			break;
+
 		case GAMEookami:
 			//狼
+
 			enemy.pos.y = 650.0f;
+
+			motionCount++;
+		
+			if (motionCount >= 210 && motionCount<=300) {
+				randX = rand() % 21 - 10;
+			} else {
+				randX = 0;
+			}
+			
+
+			if (motionCount >= 300) {
+				enemy.pos.x -= enemy.speed;
+				enemy.speed +=enemy.velocity.x;
+
+			}
+			if (enemy.pos.x <= 128.0f) {
+				enemy.speed = 0.0f;
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+			}
+
+
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = GAMEgoburinn;
 			}
 
 			break;
+
 		case GAMEgoburinn:
 			//ゴブリン
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -169,6 +201,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMErizadoman:
 			//リザードマン
+			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				gameShene = GAMEdoragon2;
+			}
+
+			break;
+		case GAMEdoragon2:
+			//ドラゴン２
 
 			break;
 		case CLEAR:
@@ -209,7 +248,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMEookami:
 			//狼
 			Novice::ScreenPrintf(0, 0, "OOKAMI");
-			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f+randX),
 				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 		case GAMEgoburinn:
@@ -223,6 +263,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
+			break;
+		case GAMEdoragon2:
+			//ドラゴン２
+			Novice::ScreenPrintf(0, 0, "DORAGON2");
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), doragon2handle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 		case CLEAR:
 			
