@@ -106,6 +106,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int doragonhandle = Novice::LoadTexture("./Resources/doragon.png");
 	int ookamihandle = Novice::LoadTexture("./Resources/ookami.png");
 	int goburinhanndle = Novice::LoadTexture("./Resources/goburinn.png");
+	int kodomogoburinnhandle = Novice::LoadTexture("./Resources/kodomogoburinn.png");
 	int rizadomanhandle = Novice::LoadTexture("./Resources/reza-doman.png");
 	int doragon2handle = Novice::LoadTexture("./Resources/doragon2.png");
 
@@ -257,6 +258,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "GOBURINN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), goburinhanndle, 1.0f, 1.0f, 0.0f, WHITE);
+			//子供
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f-200.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
+
 			break;
 		case GAMErizadoman:
 			//リザードマン
