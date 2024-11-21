@@ -110,6 +110,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int rizadomanhandle = Novice::LoadTexture("./Resources/reza-doman.png");
 	int doragon2handle = Novice::LoadTexture("./Resources/doragon2.png");
 
+	//背景
+	int backGroundHandle = Novice::LoadTexture("./Resources/mori.png");
+
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
 		// フレームの開始
@@ -232,13 +235,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		
+		
+			
+		
+
 		switch (gameShene) {
 		case TITLE:
 			Novice::ScreenPrintf(0, 0, "TITLE");
 			break;
 
 		case GAMEdoragon:
-			
+			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
 
@@ -247,6 +254,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMEookami:
+			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//狼
 			Novice::ScreenPrintf(0, 0, "OOKAMI");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
@@ -254,6 +262,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 		case GAMEgoburinn:
+			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//ゴブリン
 			Novice::ScreenPrintf(0, 0, "GOBURINN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
@@ -264,12 +273,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMErizadoman:
+			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//リザードマン
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 		case GAMEdoragon2:
+			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//ドラゴン２
 			Novice::ScreenPrintf(0, 0, "DORAGON2");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
