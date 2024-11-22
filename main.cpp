@@ -234,7 +234,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
 
-				if (motionCount>=800){
+				if (motionCount>=660){
 					if (enemyFollowers[i - 1].pos.x <= 500.0f) {
 						enemyFollowers[i].pos.x -= enemyFollowers[i].speed;
 					}
