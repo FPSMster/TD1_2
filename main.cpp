@@ -47,6 +47,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		bool isBulletShot;
 	};
 
+	struct EnemyFollowers {
+		Vector2 pos;
+		float speed;
+		bool isAlive;
+		bool isBulletShot;
+	};
+
 	int life = 3;
 	/*int enemyLife = 100;*/
 	//int level = 0;
@@ -64,6 +71,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		enemyAttack[i].pos.y = 360.0f;
 		enemyAttack[i].speed = 20.0f;
 		enemyAttack[i].isBulletShot = false;
+	}
+
+	EnemyFollowers enemyFollowers[5];
+	for (int i = 0; i < 5; i++) {
+		enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
+		enemyFollowers[i].pos.y = 555.0f-i*5;
+		enemyFollowers[i].speed = 5.0f;
+		enemyFollowers[i].isAlive = false;
+		enemyFollowers[i].isBulletShot = false;
 	}
 
 	enum Shene {
@@ -192,12 +208,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = GAMEgoburinn;
+				motionCount = 0;
 			}
 
 			break;
 
 		case GAMEgoburinn:
 			//ゴブリン
+			motionCount++;
+
+			if (motionCount >= 100 ) {
+				for (int i = 0; i < 5; i++) {
+					if (enemyFollowers[i].isAlive == false) {
+						enemyFollowers[i].isAlive = true;
+					}
+				}
+			}
+			for (int i = 0; i < 5; i++) {
+
+				if (enemyFollowers[i].pos.y <= 650.0f && enemyFollowers[i].isAlive) {
+					enemyFollowers[i].pos.y +=enemyFollowers[i].speed;
+				}
+			}
+
+
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = GAMErizadoman;
 			}
@@ -263,13 +297,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMEgoburinn:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			//
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 			//ゴブリン
 			Novice::ScreenPrintf(0, 0, "GOBURINN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), goburinhanndle, 1.0f, 1.0f, 0.0f, WHITE);
 			//子供
-			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f-200.0f),
-				static_cast<int>(enemy.pos.y ), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
+			for (int i = 0; i < 5; i++) {
+				if (enemyFollowers[i].isAlive) {
+					Novice::DrawSprite(static_cast<int>(enemyFollowers[i].pos.x),
+						static_cast<int>(enemyFollowers[i].pos.y), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
+			
 
 			break;
 		case GAMErizadoman:
