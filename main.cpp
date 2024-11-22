@@ -199,6 +199,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				enemy.speed +=enemy.velocity.x;
 
 			}
+
 			if (enemy.pos.x <= 128.0f) {
 				enemy.speed = 0.0f;
 				enemy.pos.x = 1000.0f;
@@ -217,18 +218,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//ゴブリン
 			motionCount++;
 
-			if (motionCount >= 100 ) {
+			if (motionCount >= 600 ) {
 				for (int i = 0; i < 5; i++) {
 					if (enemyFollowers[i].isAlive == false) {
 						enemyFollowers[i].isAlive = true;
 					}
 				}
 			}
+
+
+
 			for (int i = 0; i < 5; i++) {
 
 				if (enemyFollowers[i].pos.y <= 650.0f && enemyFollowers[i].isAlive) {
-					enemyFollowers[i].pos.y +=enemyFollowers[i].speed;
+					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
+
+				if (motionCount>=800){
+					if (enemyFollowers[i - 1].pos.x <= 500.0f) {
+						enemyFollowers[i].pos.x -= enemyFollowers[i].speed;
+					}
+				}
+
+
+			}
+
+			if (enemyFollowers[4].pos.x + 32 <= 0) {
+				for (int i= 0; i < 5; i++) {
+					enemyFollowers[i].isAlive = false;
+					enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
+					enemyFollowers[i].pos.y = 555.0f - i * 5;
+						
+				}
+				motionCount = 0;
 			}
 
 
