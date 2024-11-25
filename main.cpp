@@ -5,6 +5,84 @@
 
 const char kWindowTitle[] = "GC1B 03 クドウ　マコト　タイトル";
 
+struct Vector2 {
+	float x;
+	float y;
+};
+
+
+struct Player {
+	Vector2 pos;
+	float radius;
+	int speed;
+	int bulletCoolTime;
+	float velocity;
+	float gravity;
+	float jumpPower;
+	bool isJumping;
+};
+
+struct Enemy {
+	Vector2 pos;
+	float speed;
+	Vector2 velocity;
+	bool isAlive;
+	bool isBulletShot;
+};
+
+struct EnemyFollowers {
+	Vector2 pos;
+	float speed;
+	bool isAlive;
+	bool isBulletShot;
+};
+
+
+void Jump(Player& player)
+{
+	if (!player.isJumping) {
+		player.velocity = -player.jumpPower;
+		player.isJumping = true;
+	}
+}
+
+
+void ApplyGravity(Player& player)
+{
+	player.velocity += player.gravity;
+	player.pos.y += player.velocity;
+	if (player.pos.y + player.radius / 2 >= 600.0f) {
+		player.pos.y = 600.0f - player.radius / 2;
+		player.isJumping = false;
+		player.velocity = 0.0f;
+	}
+}
+
+struct Bullet {
+	Vector2 pos;
+	float radius;
+	float speed;
+	int isShoot;
+	Vector2 direction;
+};
+
+struct Mouse {
+	int posX;
+	int posY;
+	Vector2 direction;
+};
+
+Vector2 Normalize(const Vector2& vector) {
+	float length = sqrtf(vector.x * vector.x + vector.y * vector.y);
+
+	if (length != 0) {
+		return { vector.x / length, vector.y / length };
+	} else {
+		return { 0.0f, 0.0f };
+	}
+}
+
+
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	
@@ -13,46 +91,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	srand(unsigned int(time(nullptr)));
 
-	struct Vector2{
-		float x;
-		float y;
-	};
 
-	struct Player{
-		Vector2 pos;
-		float speed;
-		Vector2 velocity;
-		bool isBulletShot;
-	};
+	//プレイヤーの初期化
+	Player player = {};
 
-	Player player{
-		{100.0f,500.0f},
-		{10.0f},
-		{0.0f,0.0f}
-	};
+	player.pos.x = 100.0f;
+	player.pos.y = 568.0f;
+	player.radius = 64.0f;
+	player.velocity = 0.0f;
+	player.gravity = 0.8f;
+	player.jumpPower = 20.0f;
+	player.speed = 10;
+	player.bulletCoolTime = 0;
+	player.isJumping = false;
 
-	Player attack[6];
-	for (int i = 0; i < 6; i++) {
-		attack[i].pos.x = 100.0f;
-		attack[i].pos.y = 500.0f;
-		attack[i].speed = 15.0f;
-		attack[i].isBulletShot = false;
 
-	}
-	struct Enemy{
-		Vector2 pos;
-		float speed;
-		Vector2 velocity;
-		bool isAlive;
-		bool isBulletShot;
-	};
-
-	struct EnemyFollowers {
-		Vector2 pos;
-		float speed;
-		bool isAlive;
-		bool isBulletShot;
-	};
 
 	int life = 3;
 	/*int enemyLife = 100;*/
@@ -128,6 +181,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//背景
 	int backGroundHandle = Novice::LoadTexture("./Resources/mori.png");
+	//クロスヘア
+	int pointHandle = Novice::LoadTexture("./Resources./pointo.png");
+	//プレイヤー
+	int playerHandle = Novice::LoadTexture("./Resources./player.png");
+
+	//弾の初期化
+	Bullet bullet[8];
+	for (int i = 0; i < 8; i++) {
+		bullet[i].pos.x = -128;
+		bullet[i].pos.y = -128;
+		bullet[i].radius = 8;
+		bullet[i].speed = 10;
+		bullet[i].isShoot = false;
+		bullet[i].direction.x = 0;
+		bullet[i].direction.y = 0;
+	}
+
+
+	//クロスヘアの初期化
+	Mouse mouse = {};
+
+	mouse.posX = 0;
+	mouse.posY = 0;
+	mouse.direction.x = 0;
+	mouse.direction.y = 0;
+
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -149,6 +228,69 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAMEdoragon:
+
+			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
+			mouse.direction.x = mouse.posX - player.pos.x;
+			mouse.direction.y = mouse.posY - player.pos.y;
+			mouse.direction = Normalize(mouse.direction);
+
+			Novice::SetMouseCursorVisibility(0);
+
+
+			if (Novice::IsTriggerMouse(0)) {
+				if (player.bulletCoolTime <= 0) {
+					for (int i = 0; i < 8; i++) {
+						if (!bullet[i].isShoot) {
+							bullet[i].isShoot = true;
+							bullet[i].pos.x = player.pos.x;
+							bullet[i].pos.y = player.pos.y;
+							bullet[i].direction.x = mouse.direction.x;
+							bullet[i].direction.y = mouse.direction.y;
+							player.bulletCoolTime = 10;
+							break;
+						}
+					}
+				}
+			}
+
+
+
+			if (player.bulletCoolTime > 0) {
+				player.bulletCoolTime--;
+			}
+
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
+					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
+					if (bullet[i].pos.y <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.y >= 720 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+				}
+			}
+
+			if (keys[DIK_W] && !preKeys[DIK_W]) {
+
+				Jump(player);
+			}
+			if (keys[DIK_D]) {
+				player.pos.x = player.pos.x + player.speed;
+			}
+			if (keys[DIK_A]) {
+				player.pos.x = player.pos.x - player.speed;
+			}
+
+			ApplyGravity(player);
 
 			///ドラゴンの処理
 
@@ -301,12 +443,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAMEdoragon:
+
+			
+
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
 
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					Novice::DrawEllipse(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius), static_cast<int>(bullet[i].radius), static_cast<int>(bullet[i].radius), 0.0f, WHITE, kFillModeSolid);
+				}
+			}
+
+
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16),playerHandle,1.0f,1.0f,  0.0f, WHITE);
+
+
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x -64.0f),
 				static_cast<int>(enemy.pos.y-64.0f), doragonhandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+
+			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			break;
 		case GAMEookami:
