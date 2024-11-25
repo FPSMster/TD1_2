@@ -168,7 +168,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			///
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				enemy.pos.x = 1000.0f;
 				gameShene = GAMEookami;
+
 			}
 
 
@@ -208,6 +210,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				enemy.pos.x = 1000.0f;
 				gameShene = GAMEgoburinn;
 				motionCount = 0;
 			}
@@ -218,7 +221,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//ゴブリン
 			motionCount++;
 
-			if (motionCount >= 600 ) {
+			if (motionCount >= 400 ) {
 				for (int i = 0; i < 5; i++) {
 					if (enemyFollowers[i].isAlive == false) {
 						enemyFollowers[i].isAlive = true;
@@ -234,7 +237,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
 
-				if (motionCount>=660){
+				if (motionCount>=460){
 					if (enemyFollowers[i - 1].pos.x <= 500.0f) {
 						enemyFollowers[i].pos.x -= enemyFollowers[i].speed;
 					}
@@ -255,13 +258,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
 				gameShene = GAMErizadoman;
 			}
 
 			break;
 		case GAMErizadoman:
 			//リザードマン
+			motionCount++;
+
+			if (motionCount >= 120) {
+				enemy.pos.x -= enemy.speed;
+			}
+			if (motionCount >= 150 &&motionCount<=180) {
+				enemy.pos.y -= enemy.speed;
+			}
+			if (motionCount >= 180 && enemy.pos.y <= 650.0f) {
+				enemy.pos.y += enemy.speed*2;
+
+			}
+
+			if (enemy.pos.x <= -64) {
+				enemy.pos.x = 1280 + 64;
+				motionCount = 0;
+			}
+
+			if (enemy.pos.x > 1000) {
+				enemy.pos.x -= enemy.speed;
+				motionCount = 0;
+			}
+
+			
+
+
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				enemy.pos.x = 1000.0f;
 				gameShene = GAMEdoragon2;
 			}
 
@@ -281,6 +313,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 			break;
 		}
+
+
 
 
 		///
@@ -339,6 +373,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//リザードマン
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
