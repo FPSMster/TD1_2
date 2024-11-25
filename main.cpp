@@ -412,7 +412,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			motionCount++;
 
 			if (motionCount >= 120) {
-				enemy.pos.x -= enemy.speed;
+				enemy.pos.x -= 5.0f;
+			}
+
+
+			if (motionCount == 150) {
+				enemy.velocity.y = -20;
+				enemy.speed += enemy.velocity.y;
+			}
+
+			if (motionCount >= 150 && motionCount<=160) {
+				enemy.pos.y += enemy.speed;
+			}
+
+			/*if (motionCount >= 160) {
+				enemy.velocity.y = -enemy.velocity.y;
+				enemy.speed += enemy.velocity.y;
+			}*/
+
+			if (motionCount >= 160 && enemy.pos.y <= 650.0f) {
+				enemy.pos.y += enemy.speed;
+				enemy.speed += 0.9f;
 			}
 
 			/*if (motionCount == 150) {
@@ -434,11 +454,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (enemy.pos.x <= -64) {
 				enemy.pos.x = 1280 + 64;
+				enemy.speed = 5.0f;
 				motionCount = 0;
 			}
 
 			if (enemy.pos.x > 1000) {
-				enemy.pos.x -= enemy.speed;
+				enemy.pos.x -= 5.0f;
 				motionCount = 0;
 			}
 
