@@ -196,12 +196,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	int zangekiCount = 0;
 
+	int mahouHandle[4];
+	mahouHandle[0] = Novice::LoadTexture("./Resources./mahou1.png");
+	mahouHandle[1] = Novice::LoadTexture("./Resources./mahou2.png");
+	mahouHandle[2] = Novice::LoadTexture("./Resources./mahou3.png");
+	mahouHandle[3] = Novice::LoadTexture("./Resources./mahou4.png");
+
+	int mahouCount = 0;
+
 	//弾の初期化
 	Bullet bullet[8];
 	for (int i = 0; i < 8; i++) {
 		bullet[i].pos.x = -128;
 		bullet[i].pos.y = -128;
-		bullet[i].radius = 8;
+		bullet[i].radius = 32;
 		bullet[i].speed = 10;
 		bullet[i].isShoot = false;
 		bullet[i].direction.x = 0;
@@ -305,6 +313,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			///ドラゴンの処理
 
+			
+
 			if (theta <= 5*float(M_PI)) {
 				theta += float(M_PI) / 150.0f;
 				enemy.pos.y = (4 / float(M_PI) * sinf(theta) +
@@ -317,12 +327,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				theta = 0.0f;
 				
 			}
+			mahouCount = ++mahouCount % 60;
 
 
 			///
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
 				gameShene = GAMEookami;
+
 
 			}
 
@@ -335,8 +347,67 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 			break;
 
+			
+
 		case GAMEookami:
 			//狼
+
+			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
+			mouse.direction.x = mouse.posX - player.pos.x;
+			mouse.direction.y = mouse.posY - player.pos.y;
+			mouse.direction = Normalize(mouse.direction);
+
+			if (Novice::IsTriggerMouse(0)) {
+				if (player.bulletCoolTime <= 0) {
+					for (int i = 0; i < 8; i++) {
+						if (!bullet[i].isShoot) {
+							bullet[i].isShoot = true;
+							bullet[i].pos.x = player.pos.x;
+							bullet[i].pos.y = player.pos.y;
+							bullet[i].direction.x = mouse.direction.x;
+							bullet[i].direction.y = mouse.direction.y;
+							player.bulletCoolTime = 10;
+							break;
+						}
+					}
+				}
+			}
+
+			if (player.bulletCoolTime > 0) {
+				player.bulletCoolTime--;
+			}
+
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
+					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
+					if (bullet[i].pos.y <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.y >= 720 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+				}
+			}
+
+			if (keys[DIK_W] && !preKeys[DIK_W]) {
+
+				Jump(player);
+			}
+			if (keys[DIK_D]) {
+				player.pos.x = player.pos.x + player.speed;
+			}
+			if (keys[DIK_A]) {
+				player.pos.x = player.pos.x - player.speed;
+			}
+			ApplyGravity(player);
 
 			enemy.pos.y = 650.0f;
 
@@ -368,11 +439,72 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 			}
 
+			mahouCount = ++mahouCount % 60;
+
 			break;
 
 		case GAMEgoburinn:
 			//ゴブリン
+
+			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
+			mouse.direction.x = mouse.posX - player.pos.x;
+			mouse.direction.y = mouse.posY - player.pos.y;
+			mouse.direction = Normalize(mouse.direction);
+
+			if (Novice::IsTriggerMouse(0)) {
+				if (player.bulletCoolTime <= 0) {
+					for (int i = 0; i < 8; i++) {
+						if (!bullet[i].isShoot) {
+							bullet[i].isShoot = true;
+							bullet[i].pos.x = player.pos.x;
+							bullet[i].pos.y = player.pos.y;
+							bullet[i].direction.x = mouse.direction.x;
+							bullet[i].direction.y = mouse.direction.y;
+							player.bulletCoolTime = 10;
+							break;
+						}
+					}
+				}
+			}
+
+			if (player.bulletCoolTime > 0) {
+				player.bulletCoolTime--;
+			}
+
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
+					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
+					if (bullet[i].pos.y <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.y >= 720 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+				}
+			}
+
+			if (keys[DIK_W] && !preKeys[DIK_W]) {
+
+				Jump(player);
+			}
+			if (keys[DIK_D]) {
+				player.pos.x = player.pos.x + player.speed;
+			}
+			if (keys[DIK_A]) {
+				player.pos.x = player.pos.x - player.speed;
+			}
+			ApplyGravity(player);
+
 			motionCount++;
+
 
 			if (motionCount >= 300 ) {
 				for (int i = 0; i < 5; i++) {
@@ -416,9 +548,69 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameShene = GAMErizadoman;
 			}
 
+			mahouCount = ++mahouCount % 60;
+
 			break;
 		case GAMErizadoman:
 			//リザードマン
+
+			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
+			mouse.direction.x = mouse.posX - player.pos.x;
+			mouse.direction.y = mouse.posY - player.pos.y;
+			mouse.direction = Normalize(mouse.direction);
+
+			if (Novice::IsTriggerMouse(0)) {
+				if (player.bulletCoolTime <= 0) {
+					for (int i = 0; i < 8; i++) {
+						if (!bullet[i].isShoot) {
+							bullet[i].isShoot = true;
+							bullet[i].pos.x = player.pos.x;
+							bullet[i].pos.y = player.pos.y;
+							bullet[i].direction.x = mouse.direction.x;
+							bullet[i].direction.y = mouse.direction.y;
+							player.bulletCoolTime = 10;
+							break;
+						}
+					}
+				}
+			}
+
+			if (player.bulletCoolTime > 0) {
+				player.bulletCoolTime--;
+			}
+
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
+					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
+					if (bullet[i].pos.y <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.y >= 720 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+				}
+			}
+
+			if (keys[DIK_W] && !preKeys[DIK_W]) {
+
+				Jump(player);
+			}
+			if (keys[DIK_D]) {
+				player.pos.x = player.pos.x + player.speed;
+			}
+			if (keys[DIK_A]) {
+				player.pos.x = player.pos.x - player.speed;
+			}
+			ApplyGravity(player);
+
 			motionCount++;
 
 			if (motionCount >= 120) {
@@ -475,7 +667,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			zangekiCount = ++zangekiCount % 60;
 			
-
+			mahouCount = ++mahouCount % 60;
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
@@ -485,6 +677,65 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		case GAMEdoragon2:
 			//ドラゴン２
+
+			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
+			mouse.direction.x = mouse.posX - player.pos.x;
+			mouse.direction.y = mouse.posY - player.pos.y;
+			mouse.direction = Normalize(mouse.direction);
+
+			if (Novice::IsTriggerMouse(0)) {
+				if (player.bulletCoolTime <= 0) {
+					for (int i = 0; i < 8; i++) {
+						if (!bullet[i].isShoot) {
+							bullet[i].isShoot = true;
+							bullet[i].pos.x = player.pos.x;
+							bullet[i].pos.y = player.pos.y;
+							bullet[i].direction.x = mouse.direction.x;
+							bullet[i].direction.y = mouse.direction.y;
+							player.bulletCoolTime = 10;
+							break;
+						}
+					}
+				}
+			}
+
+			if (player.bulletCoolTime > 0) {
+				player.bulletCoolTime--;
+			}
+
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
+					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
+					if (bullet[i].pos.y <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.y >= 720 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x <= 0 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
+						bullet[i].isShoot = false;
+					}
+				}
+			}
+
+			if (keys[DIK_W] && !preKeys[DIK_W]) {
+
+				Jump(player);
+			}
+			if (keys[DIK_D]) {
+				player.pos.x = player.pos.x + player.speed;
+			}
+			if (keys[DIK_A]) {
+				player.pos.x = player.pos.x - player.speed;
+			}
+			ApplyGravity(player);
+
+			mahouCount = ++mahouCount % 60;
 
 			break;
 		case CLEAR:
@@ -527,7 +778,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			for (int i = 0; i < 8; i++) {
 				if (bullet[i].isShoot) {
-					Novice::DrawEllipse(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius), static_cast<int>(bullet[i].radius), static_cast<int>(bullet[i].radius), 0.0f, WHITE, kFillModeSolid);
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
 				}
 			}
 
@@ -547,13 +799,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//狼
 			Novice::ScreenPrintf(0, 0, "OOKAMI");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
+
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f+randX),
 				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
 			break;
 		case GAMEgoburinn:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
+			
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+
 			//ゴブリン
 			Novice::ScreenPrintf(0, 0, "GOBURINN");
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
@@ -566,6 +840,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			
+			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			break;
 		case GAMErizadoman:
@@ -574,17 +849,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//リザードマン
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+						mahouHandle[mahouCount/15],1.0f,1.0f, 0.0f, WHITE);
+				}
+			}
+
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+			
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 128.0f),
 				static_cast<int>(enemy.pos.y-64.0f), zangekiHandle[zangekiCount/10], 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
 			break;
 		case GAMEdoragon2:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//ドラゴン２
 			Novice::ScreenPrintf(0, 0, "DORAGON2");
+
+			for (int i = 0; i < 8; i++) {
+				if (bullet[i].isShoot) {
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
+
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), doragon2handle, 1.0f, 1.0f, 0.0f, WHITE);
+
+			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
 			break;
 		case CLEAR:
 			
