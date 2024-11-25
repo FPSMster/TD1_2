@@ -469,6 +469,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 			if (enemy.pos.x > 1000) {
+				enemy.pos.y = 650.0f;
 				enemy.pos.x -= 5.0f;
 				motionCount = 0;
 			}
