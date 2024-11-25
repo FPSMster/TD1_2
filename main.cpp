@@ -374,7 +374,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//ゴブリン
 			motionCount++;
 
-			if (motionCount >= 400 ) {
+			if (motionCount >= 300 ) {
 				for (int i = 0; i < 5; i++) {
 					if (enemyFollowers[i].isAlive == false) {
 						enemyFollowers[i].isAlive = true;
@@ -390,7 +390,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
 
-				if (motionCount>=460){
+				if (motionCount>=360){
 					if (enemyFollowers[i - 1].pos.x <= 500.0f) {
 						enemyFollowers[i].pos.x -= enemyFollowers[i].speed;
 					}
