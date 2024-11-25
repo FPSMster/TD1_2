@@ -478,8 +478,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		case GAMEdoragon:
 
-			
-
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
