@@ -194,7 +194,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	zangekiHandle[4] = Novice::LoadTexture("./Resources./zangeki5.png");
 	zangekiHandle[5] = Novice::LoadTexture("./Resources./zangeki6.png");
 
-	int zangekiCount = 90;
+	int zangekiCount = 0;
 
 	//弾の初期化
 	Bullet bullet[8];
