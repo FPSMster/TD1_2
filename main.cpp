@@ -237,6 +237,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::SetMouseCursorVisibility(0);
 
 
+
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
 					for (int i = 0; i < 8; i++) {
@@ -413,13 +414,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (motionCount >= 120) {
 				enemy.pos.x -= enemy.speed;
 			}
-			if (motionCount >= 150 &&motionCount<=180) {
-				enemy.pos.y -= enemy.speed;
-			}
-			if (motionCount >= 180 && enemy.pos.y <= 650.0f) {
-				enemy.pos.y += enemy.speed*2;
 
+			/*if (motionCount == 150) {
+				enemy.speed =enemy.speed/ 4;
 			}
+			if (motionCount >= 150 &&motionCount<=250) {
+				enemy.pos.y -= 5.0f;
+		
+			}
+			if (motionCount >= 250 && enemy.pos.y <= 650.0f) {
+				enemy.speed = 5.0f;
+				enemy.pos.y += 5*2;
+
+			}*/
+
+			
+
+
 
 			if (enemy.pos.x <= -64) {
 				enemy.pos.x = 1280 + 64;
