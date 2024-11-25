@@ -186,6 +186,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//プレイヤー
 	int playerHandle = Novice::LoadTexture("./Resources./player.png");
 
+	int zangekiHandle[6];
+	zangekiHandle[0] = Novice::LoadTexture("./Resources./zangeki1.png");
+	zangekiHandle[1] = Novice::LoadTexture("./Resources./zangeki2.png");
+	zangekiHandle[2] = Novice::LoadTexture("./Resources./zangeki3.png");
+	zangekiHandle[3] = Novice::LoadTexture("./Resources./zangeki4.png");
+	zangekiHandle[4] = Novice::LoadTexture("./Resources./zangeki5.png");
+	zangekiHandle[5] = Novice::LoadTexture("./Resources./zangeki6.png");
+
+	int zangekiCount = 90;
+
 	//弾の初期化
 	Bullet bullet[8];
 	for (int i = 0; i < 8; i++) {
@@ -431,7 +441,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 			}
 
-			
+			zangekiCount = ++zangekiCount % 90;
+			/*if (zangekiCount >= 90) {
+				zangekiCount = 0;
+			}*/
 
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -526,10 +539,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			break;
 		case GAMErizadoman:
+
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//リザードマン
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
+				static_cast<int>(enemy.pos.y - 64.0f), zangekiHandle[zangekiCount/15], 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
