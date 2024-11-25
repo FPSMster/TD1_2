@@ -473,10 +473,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 			}
 
-			zangekiCount = ++zangekiCount % 90;
-			/*if (zangekiCount >= 90) {
-				zangekiCount = 0;
-			}*/
+			zangekiCount = ++zangekiCount % 60;
+			
 
 
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -576,8 +574,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//リザードマン
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
-			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
-				static_cast<int>(enemy.pos.y - 64.0f), zangekiHandle[zangekiCount/15], 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 128.0f),
+				static_cast<int>(enemy.pos.y-64.0f), zangekiHandle[zangekiCount/10], 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), rizadomanhandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
