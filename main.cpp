@@ -160,6 +160,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	enemy.velocity.x = 5.0f;
 	unsigned int currentTime = static_cast<unsigned int>(time(nullptr));
 	srand(currentTime);
+	int enemyRandX = rand() % 21 - 10;
 	int randX = rand() % 21 - 10;
 
 	//無敵時間
@@ -408,8 +409,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (playerDistance <= 16 + player.radius) {
 						
 						enemyAttack[i].isBulletShot = false;
-
-						life=life-1;
+						if (ivincibleFlag == false) {
+							life--;
+							ivincibleFlag = true;
+						}
+						
 					}
 				}
 			}
@@ -430,7 +434,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				level++;
 				life = 3;
 				enemyLife = 100 + level * 10;
-
+				for (int i = 0; i < 20; i++) {
+					enemyAttack[i].isBulletShot = false;
+				}
 				gameShene = GAMEookami;
 
 			}
@@ -442,7 +448,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			if (ivincibleFlag) {
+				randX = rand() % 21 - 10;
 				invincible--;
+			} else {
+				randX = 0;
 			}
 
 			if (invincible == 0) {
@@ -537,9 +546,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			motionCount++;
 		
 			if (motionCount >= 210 && motionCount<=300) {
-				randX = rand() % 21 - 10;
+				enemyRandX = rand() % 21 - 10;
 			} else {
-				randX = 0;
+				enemyRandX = 0;
 			}
 			
 
@@ -577,7 +586,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			if (ivincibleFlag) {
+				randX = rand() % 21 - 10;
 				invincible--;
+			} else {
+				randX = 0;
 			}
 
 			if (invincible == 0) {
@@ -726,7 +738,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			if (ivincibleFlag) {
+				randX = rand() % 21 - 10;
 				invincible--;
+			} else {
+				randX = 0;
 			}
 
 			if (invincible == 0) {
@@ -857,6 +872,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				level++;
 				enemyLife = 100 + level * 10;
 				life = 3;
+
+				for (int i = 0; i < 20; i++) {
+					enemyAttack[i].pos.x = enemy.pos.x;
+					enemyAttack[i].pos.y = enemy.pos.y;
+				}
 				gameShene = GAMEdoragon2;
 
 
@@ -870,7 +890,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			if (ivincibleFlag) {
+				randX = rand() % 21 - 10;
 				invincible--;
+			} else {
+				randX = 0;
 			}
 
 			if (invincible == 0) {
@@ -991,8 +1014,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (playerDistance <= 16 + player.radius) {
 
 						enemyAttack[i].isBulletShot = false;
-
-						life = life - 1;
+						if (ivincibleFlag == false) {
+							life--;
+							ivincibleFlag = true;
+						}
+						
 					}
 				}
 			}
@@ -1034,10 +1060,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				invincible--;
 			}
 
+
+			if (ivincibleFlag) {
+				randX = rand() % 21 - 10;
+				invincible--;
+			} else {
+				randX = 0;
+			}
+
 			if (invincible == 0) {
 				invincible = 60;
 				ivincibleFlag = false;
 			}
+
 			if (life <= 0) {
 				gameShene = GAMEOVER;
 			}
@@ -1092,13 +1127,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
-					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
+					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius),
+						static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
 				}
 			}
 
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16),playerHandle,1.0f,1.0f,  0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16+randX), static_cast<int>(player.pos.y - 16)
+				,playerHandle,1.0f,1.0f,  0.0f, WHITE);
 
 
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x -64.0f),
@@ -1121,8 +1158,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
-			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f+randX),
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16+randX), static_cast<int>(player.pos.y - 16),
+				playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f+enemyRandX),
 				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
@@ -1139,7 +1177,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16 + randX), static_cast<int>(player.pos.y - 16),
+				playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 
 			//ゴブリン
@@ -1171,7 +1210,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16 + randX), static_cast<int>(player.pos.y - 16),
+				playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 128.0f),
@@ -1202,7 +1242,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			Novice::DrawSprite(static_cast<int>(player.pos.x - 16 + randX), static_cast<int>(player.pos.y - 16),
+				playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
