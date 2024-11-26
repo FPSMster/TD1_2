@@ -122,7 +122,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		enemyAttack[i].pos.x = 1000.0f;
 		enemyAttack[i].pos.y = 360.0f;
-		enemyAttack[i].speed = 20.0f;
+		enemyAttack[i].speed = 5.0f;
 		enemyAttack[i].isBulletShot = false;
 	}
 
@@ -203,6 +203,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	mahouHandle[3] = Novice::LoadTexture("./Resources./mahou4.png");
 
 	int mahouCount = 0;
+
+	int bressHandle[4];
+	bressHandle[0] = Novice::LoadTexture("./Resources./doragonnBress1.png");
+	bressHandle[1] = Novice::LoadTexture("./Resources./doragonnBress2.png");
+	bressHandle[2] = Novice::LoadTexture("./Resources./doragonnBress3.png");
+	bressHandle[3] = Novice::LoadTexture("./Resources./doragonnBress4.png");
 
 	//弾の初期化
 	Bullet bullet[8];
@@ -313,7 +319,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			///ドラゴンの処理
 
-			
+			motionCount++;
 
 			if (theta <= 5*float(M_PI)) {
 				theta += float(M_PI) / 150.0f;
@@ -327,6 +333,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				theta = 0.0f;
 				
 			}
+
+			if (motionCount > 300) {
+				for (int i = 0; i < 20; i++) {
+					if (enemyAttack[i].isBulletShot == false) {
+						enemyAttack[i].isBulletShot = true;
+						enemyAttack[i].pos.x = enemy.pos.x;
+						enemyAttack[i].pos.y = enemy.pos.y;
+					}
+					if (enemyAttack[i].isBulletShot) {
+						enemyAttack[i].pos.y+=enemyAttack[i].speed;
+						enemyAttack[i].pos.x -= enemyAttack[i].speed + i*5 ;
+
+					}
+
+				}
+			}
+
+			if (motionCount >= 450) {
+				for (int i = 0; i < 20; i++) {
+					enemyAttack[i].isBulletShot = false;
+				}
+				motionCount = 0;
+			}
+
+
 			mahouCount = ++mahouCount % 60;
 
 
@@ -350,7 +381,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 
 		case GAMEookami:
-			//狼
+			//自機
 
 			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
 			mouse.direction.x = mouse.posX - player.pos.x;
@@ -409,7 +440,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 			ApplyGravity(player);
 
-			enemy.pos.y = 650.0f;
+
+
+			//狼
+			enemy.pos.y = 600.0f;
 
 			motionCount++;
 		
@@ -444,7 +478,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 
 		case GAMEgoburinn:
-			//ゴブリン
+			//自機
 
 			Novice::GetMousePosition(&mouse.posX, &mouse.posY);
 			mouse.direction.x = mouse.posX - player.pos.x;
@@ -503,6 +537,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 			ApplyGravity(player);
 
+
+			//ゴブリン
 			motionCount++;
 
 
@@ -518,7 +554,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			for (int i = 0; i < 5; i++) {
 
-				if (enemyFollowers[i].pos.y <= 650.0f && enemyFollowers[i].isAlive) {
+				if (enemyFollowers[i].pos.y <= 600.0f && enemyFollowers[i].isAlive) {
 					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
 
@@ -535,7 +571,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				for (int i= 0; i < 5; i++) {
 					enemyFollowers[i].isAlive = false;
 					enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
-					enemyFollowers[i].pos.y = 555.0f - i * 5;
+					enemyFollowers[i].pos.y = 505.0f - i * 5;
 						
 				}
 				motionCount = 0;
@@ -627,33 +663,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				enemy.pos.y += enemy.speed;
 			}
 
-			/*if (motionCount >= 160) {
-				enemy.velocity.y = -enemy.velocity.y;
-				enemy.speed += enemy.velocity.y;
-			}*/
-
-			if (motionCount >= 160 && enemy.pos.y <= 650.0f) {
+			if (motionCount >= 160 && enemy.pos.y <= 600.0f) {
 				enemy.pos.y += enemy.speed;
 				enemy.speed += 0.9f;
 			}
 
-			/*if (motionCount == 150) {
-				enemy.speed =enemy.speed/ 4;
-			}
-			if (motionCount >= 150 &&motionCount<=250) {
-				enemy.pos.y -= 5.0f;
-		
-			}
-			if (motionCount >= 250 && enemy.pos.y <= 650.0f) {
-				enemy.speed = 5.0f;
-				enemy.pos.y += 5*2;
-
-			}*/
-
 			
-
-
-
 			if (enemy.pos.x <= -64) {
 				enemy.pos.x = 1280 + 64;
 				enemy.speed = 5.0f;
@@ -661,7 +676,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 			if (enemy.pos.x > 1000) {
-				enemy.pos.y = 650.0f;
+				enemy.pos.y = 600.0f;
 				enemy.pos.x -= 5.0f;
 				motionCount = 0;
 			}
@@ -738,6 +753,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			mahouCount = ++mahouCount % 60;
 
+
+			//
+			motionCount++;
+			if (motionCount >= 90 && motionCount<=110 ) {
+				enemy.pos.x -= enemy.speed;
+				enemy.speed += enemy.velocity.x;
+			}
+
+			if (motionCount>=110) {
+				enemy.speed = 0.0f;
+				enemy.pos.x = 1000.0f;
+
+				theta += float(M_PI) / 150.0f;
+				enemy.pos.y = (4 / float(M_PI) * sinf(theta) +
+					4 / 3 * float(M_PI) * sinf(3 * theta) + 4 / 5 * float(M_PI) * sinf(5 * theta)) * 50 + 360.0f;
+			
+			}
+
+			if (motionCount >= 550) {
+				
+				enemy.pos.y = 600.0f;
+					motionCount = 0;
+			}
+
 			break;
 		case CLEAR:
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -776,6 +815,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
+
+			for (int i = 0; i < 20; i++) {
+				if (enemyAttack[i].isBulletShot) {
+					Novice::DrawSprite(static_cast<int>(enemyAttack[i].pos.x - 16), static_cast<int>(enemyAttack[i].pos.y - 16),
+						bressHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
 
 			for (int i = 0; i < 8; i++) {
 				if (bullet[i].isShoot) {
@@ -873,6 +919,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//ドラゴン２
 			Novice::ScreenPrintf(0, 0, "DORAGON2");
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 
 			for (int i = 0; i < 8; i++) {
 				if (bullet[i].isShoot) {
