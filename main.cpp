@@ -161,6 +161,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	unsigned int currentTime = static_cast<unsigned int>(time(nullptr));
 	srand(currentTime);
 	int randX = rand() % 21 - 10;
+
+	//無敵時間
+	int invincible = 60;
+	int ivincibleFlag = false;
+
+	//自機の当たり判定
+	float playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+
 	//敵のスポーン
 	
 	/*enum Boss {
@@ -253,6 +261,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		switch (gameShene){
 		case TITLE:
+			life = 3;
+			enemy.pos.x = 1000.0f;
+			enemy.pos.y = 600.0f;
+			theta = float(M_PI) / 15.0f;
+			invincible = 0;
+			player.pos.x = 100.0f;
+			motionCount = 0;
+			ivincibleFlag = false;
+			for (int i = 0; i < 20; i++) {
+				enemyAttack[i].pos.x = enemy.pos.x;
+				enemyAttack[i].pos.y = enemy.pos.y;
+				enemyAttack[i].speed = 5.0f;
+				enemyAttack[i].isBulletShot = false;
+			}
+			for (int i = 0; i < 8; i++) {
+				
+			}
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = GAMEdoragon;
 			}
@@ -351,7 +376,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				
 			}
 
-			if (motionCount > 300) {
+			if (motionCount > 360  ) {
 				for (int i = 0; i < 20; i++) {
 					if (enemyAttack[i].isBulletShot == false) {
 						enemyAttack[i].isBulletShot = true;
@@ -364,10 +389,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 					}
 
+					playerDistance = collision((enemyAttack[i].pos.x - player.pos.x), (enemyAttack[i].pos.y - player.pos.y));
+					if (playerDistance <= 16 + player.radius) {
+						
+						enemyAttack[i].isBulletShot = false;
+
+						life=life-1;
+					}
 				}
 			}
 
-			if (motionCount >= 450) {
+			if (motionCount >= 450 ) {
 				for (int i = 0; i < 20; i++) {
 					enemyAttack[i].isBulletShot = false;
 				}
@@ -381,20 +413,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				enemy.pos.x = 1000.0f;
 				motionCount = 0;
 				level++;
+				life = 3;
 				enemyLife = 100 + level * 10;
-				gameShene = GAMEookami;
 
+				gameShene = GAMEookami;
 
 			}
+			playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+			if (playerDistance <= 64 + player.radius ) {
+				if (ivincibleFlag == false) {
+					life--;
+					ivincibleFlag = true;
+				}
+			}
+			if (ivincibleFlag) {
+				invincible--;
+			}
 
-			///
-			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
-				enemy.pos.x = 1000.0f;
-				motionCount = 0;
-				gameShene = GAMEookami;
+			if (invincible == 0) {
+				invincible = 60;
+				ivincibleFlag = false;
+			}
 
-
-			}*/
 
 
 			/*if (enemyLife <= 0) {
@@ -506,10 +546,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 				level++;
 				enemyLife = 100 + level * 10;
+				life = 3;
+				theta = float(M_PI) / 30.0f;
 				gameShene = GAMEgoburinn;
 
 
 			}
+
+			playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+			if (playerDistance <= 64 + player.radius) {
+				if (ivincibleFlag == false) {
+					life--;
+					ivincibleFlag = true;
+				}
+			}
+			if (ivincibleFlag) {
+				invincible--;
+			}
+
+			if (invincible == 0) {
+				invincible = 60;
+				ivincibleFlag = false;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
+			}
+		
 
 			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
@@ -634,9 +696,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 				level++;
 				enemyLife = 100 + level * 10;
+				life = 3;
 				gameShene = GAMErizadoman;
 
 
+			}
+
+			playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+			if (playerDistance <= 64 + player.radius) {
+				if (ivincibleFlag == false) {
+					life--;
+					ivincibleFlag = true;
+				}
+			}
+			if (ivincibleFlag) {
+				invincible--;
+			}
+
+			if (invincible == 0) {
+				invincible = 60;
+				ivincibleFlag = false;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
 			}
 
 			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -758,9 +840,29 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 				level++;
 				enemyLife = 100 + level * 10;
+				life = 3;
 				gameShene = GAMEdoragon2;
 
 
+			}
+
+			playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+			if (playerDistance <= 64 + player.radius) {
+				if (ivincibleFlag == false) {
+					life--;
+					ivincibleFlag = true;
+				}
+			}
+			if (ivincibleFlag) {
+				invincible--;
+			}
+
+			if (invincible == 0) {
+				invincible = 60;
+				ivincibleFlag = false;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
 			}
 
 			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
@@ -867,10 +969,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				motionCount = 0;
 				level++;
 				enemyLife = 100 + level * 10;
+				theta = float(M_PI) / 30.0f;
+				life = 3;
+				move = -500.0f;
 				gameShene = GAMEdoragon;
 
 
 			}
+
+			playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
+			if (playerDistance <= 64 + player.radius) {
+				if (ivincibleFlag == false) {
+					life--;
+					ivincibleFlag = true;
+				}
+			}
+			if (ivincibleFlag) {
+				invincible--;
+			}
+
+			if (invincible == 0) {
+				invincible = 60;
+				ivincibleFlag = false;
+			}
+			if (life <= 0) {
+				gameShene = GAMEOVER;
+			}
+
 
 			break;
 		case CLEAR:
@@ -881,6 +1006,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMEOVER:
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = TITLE;
+				life = 3;
 			}
 			break;
 		}
@@ -910,7 +1036,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
-
+			Novice::ScreenPrintf(0, 20, "%d", life);
 			for (int i = 0; i < 20; i++) {
 				if (enemyAttack[i].isBulletShot) {
 					Novice::DrawSprite(static_cast<int>(enemyAttack[i].pos.x - 16), static_cast<int>(enemyAttack[i].pos.y - 16),
@@ -940,7 +1066,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//狼
 			Novice::ScreenPrintf(0, 0, "OOKAMI");
-			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			Novice::ScreenPrintf(0, 20, "%d", life);
 
 			for (int i = 0; i < 8; i++) {
 				if (bullet[i].isShoot) {
@@ -1036,7 +1162,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			break;
 		case GAMEOVER:
-			
+			Novice::ScreenPrintf(0, 0, "GAMEOVER");
 			break;
 		}
 
