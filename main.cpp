@@ -37,6 +37,9 @@ struct EnemyFollowers {
 	bool isBulletShot;
 };
 
+float collision(float  a, float b) {
+	return sqrtf(a * a + b * b);
+}
 
 void Jump(Player& player)
 {
@@ -64,6 +67,7 @@ struct Bullet {
 	float speed;
 	int isShoot;
 	Vector2 direction;
+	float enemyDistance;
 };
 
 struct Mouse {
@@ -108,8 +112,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 	int life = 3;
-	/*int enemyLife = 100;*/
-	//int level = 0;
+	int enemyLife = 100;
+	int level = 0;
 
 	Enemy enemy{
 		{1000.0f,360.0f},
@@ -220,8 +224,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		bullet[i].isShoot = false;
 		bullet[i].direction.x = 0;
 		bullet[i].direction.y = 0;
+		//球と敵の当たり判定
+		bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
 	}
 
+	
 
 	//クロスヘアの初期化
 	Mouse mouse = {};
@@ -301,8 +308,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
 						bullet[i].isShoot = false;
 					}
+
+					//自機の球と敵の当たり判定
+					bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
+					if (bullet[i].enemyDistance <= bullet[i].radius + 64) {
+						bullet[i].isShoot = false;
+						enemyLife -= 10;
+					}
+
 				}
 			}
+
+
 
 			if (keys[DIK_W] && !preKeys[DIK_W]) {
 
@@ -343,7 +360,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					}
 					if (enemyAttack[i].isBulletShot) {
 						enemyAttack[i].pos.y+=enemyAttack[i].speed;
-						enemyAttack[i].pos.x -= enemyAttack[i].speed + i*5 ;
+						enemyAttack[i].pos.x -= enemyAttack[i].speed + i*5;
 
 					}
 
@@ -360,14 +377,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			mahouCount = ++mahouCount % 60;
 
-
-			///
-			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+			if (enemyLife<=0) {
 				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				level++;
+				enemyLife = 100 + level * 10;
 				gameShene = GAMEookami;
 
 
 			}
+
+			///
+			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				gameShene = GAMEookami;
+
+
+			}*/
 
 
 			/*if (enemyLife <= 0) {
@@ -425,6 +452,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
 						bullet[i].isShoot = false;
 					}
+
+					//自機の球と敵の当たり判定
+					bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
+					if (bullet[i].enemyDistance <= bullet[i].radius + 64) {
+						bullet[i].isShoot = false;
+						enemyLife -= 10;
+					}
 				}
 			}
 
@@ -467,11 +501,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+			if(enemyLife <= 0) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				level++;
+				enemyLife = 100 + level * 10;
+				gameShene = GAMEgoburinn;
+
+
+			}
+
+			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
 				gameShene = GAMEgoburinn;
 				motionCount = 0;
-			}
+			}*/
 
 			mahouCount = ++mahouCount % 60;
 
@@ -521,6 +565,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					}
 					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
 						bullet[i].isShoot = false;
+					}
+
+					//自機の球と敵の当たり判定
+					bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
+					if (bullet[i].enemyDistance <= bullet[i].radius + 64) {
+						bullet[i].isShoot = false;
+						enemyLife -= 10;
 					}
 				}
 			}
@@ -578,11 +629,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+			if (enemyLife <= 0) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				level++;
+				enemyLife = 100 + level * 10;
+				gameShene = GAMErizadoman;
+
+
+			}
+
+			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
 				motionCount = 0;
 				gameShene = GAMErizadoman;
-			}
+			}*/
 
 			mahouCount = ++mahouCount % 60;
 
@@ -631,6 +692,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					}
 					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
 						bullet[i].isShoot = false;
+					}
+
+					//自機の球と敵の当たり判定
+					bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
+					if (bullet[i].enemyDistance <= bullet[i].radius + 64) {
+						bullet[i].isShoot = false;
+						enemyLife -= 10;
 					}
 				}
 			}
@@ -685,10 +753,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			mahouCount = ++mahouCount % 60;
 
-			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
+			if (enemyLife <= 0) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				level++;
+				enemyLife = 100 + level * 10;
+				gameShene = GAMEdoragon2;
+
+
+			}
+
+			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				enemy.pos.x = 1000.0f;
 				gameShene = GAMEdoragon2;
-			}
+			}*/
 
 			break;
 		case GAMEdoragon2:
@@ -736,6 +814,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (bullet[i].pos.x >= 1280 - bullet[i].radius / 2) {
 						bullet[i].isShoot = false;
 					}
+
+					//自機の球と敵の当たり判定
+					bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
+					if (bullet[i].enemyDistance <= bullet[i].radius + 64) {
+						bullet[i].isShoot = false;
+						enemyLife -= 10;
+					}
 				}
 			}
 
@@ -775,6 +860,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				
 				enemy.pos.y = 600.0f;
 					motionCount = 0;
+			}
+
+			if (enemyLife <= 0) {
+				enemy.pos.x = 1000.0f;
+				motionCount = 0;
+				level++;
+				enemyLife = 100 + level * 10;
+				gameShene = GAMEdoragon;
+
+
 			}
 
 			break;
