@@ -204,6 +204,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	int mahouCount = 0;
 
+	int bressHandle[4];
+	bressHandle[0] = Novice::LoadTexture("./Resources./doragonnBress1.png");
+	bressHandle[1] = Novice::LoadTexture("./Resources./doragonnBress2.png");
+	bressHandle[2] = Novice::LoadTexture("./Resources./doragonnBress3.png");
+	bressHandle[3] = Novice::LoadTexture("./Resources./doragonnBress4.png");
+
 	//弾の初期化
 	Bullet bullet[8];
 	for (int i = 0; i < 8; i++) {
