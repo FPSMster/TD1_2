@@ -158,7 +158,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	srand(currentTime);
 	int randX = rand() % 21 - 10;
 	//敵のスポーン
-	
+
 	/*enum Boss {
 		Boss1,
 		Boss2,
