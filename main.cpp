@@ -278,6 +278,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			for (int i = 0; i < 8; i++) {
 				
 			}
+			for (int i = 0; i < 5; i++) {
+				enemyFollowers[i].isAlive = false;
+				enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
+				enemyFollowers[i].pos.y = 505.0f - i * 5;
+
+			}
+
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = GAMEdoragon;
 			}
@@ -972,6 +979,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				theta = float(M_PI) / 30.0f;
 				life = 3;
 				move = -500.0f;
+				for (int i = 0; i < 20; i++) {
+					enemyAttack[i].isBulletShot = false;
+					enemyAttack[i].pos.x = enemy.pos.x;
+					enemyAttack[i].pos.y = enemy.pos.y;
+				
+				}
 				gameShene = GAMEdoragon;
 
 
