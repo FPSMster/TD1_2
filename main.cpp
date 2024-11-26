@@ -35,6 +35,7 @@ struct EnemyFollowers {
 	float speed;
 	bool isAlive;
 	bool isBulletShot;
+	float distance;
 };
 
 float collision(float  a, float b) {
@@ -130,14 +131,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		enemyAttack[i].isBulletShot = false;
 	}
 
-	EnemyFollowers enemyFollowers[5];
-	for (int i = 0; i < 5; i++) {
-		enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
-		enemyFollowers[i].pos.y = 555.0f-i*5;
-		enemyFollowers[i].speed = 5.0f;
-		enemyFollowers[i].isAlive = false;
-		enemyFollowers[i].isBulletShot = false;
-	}
+	
 
 	enum Shene {
 		TITLE,
@@ -237,7 +231,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		bullet[i].enemyDistance = collision((enemy.pos.x - bullet[i].pos.x), (enemy.pos.y - bullet[i].pos.y));
 	}
 
-	
+	EnemyFollowers enemyFollowers[5];
+	for (int i = 0; i < 5; i++) {
+		enemyFollowers[i].pos.x = 600.0f + i * 64.0f;
+		enemyFollowers[i].pos.y = 555.0f - i * 5;
+		enemyFollowers[i].speed = 5.0f;
+		enemyFollowers[i].isAlive = false;
+		enemyFollowers[i].isBulletShot = false;
+		for (int j = 0; j < 3; j++) {
+			enemyFollowers[i].distance = collision((bullet[j].pos.x - enemyFollowers[i].pos.x),
+				(bullet[j].pos.y - enemyFollowers[i].pos.y));
+		}
+	}
 
 	//クロスヘアの初期化
 	Mouse mouse = {};
@@ -357,6 +362,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 						enemyLife -= 10;
 					}
 
+					
 				}
 			}
 
@@ -688,6 +694,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					if (enemyFollowers[i].isAlive == false) {
 						enemyFollowers[i].isAlive = true;
 					}
+					for (int j = 0; j < 3; j++) {
+						
+						enemyFollowers[i].distance = collision((bullet[j].pos.x - enemyFollowers[i].pos.x),
+							(bullet[j].pos.y - enemyFollowers[i].pos.y));
+
+						if (enemyFollowers[i].distance <= bullet[j].radius + 32) {
+							bullet[j].isShoot = false;
+							bullet[j].pos.x = player.pos.x;
+							enemyFollowers[i].pos.x = -32;
+							
+						}
+
+						
+					}
+
+					
 				}
 			}
 
@@ -695,7 +717,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			for (int i = 0; i < 5; i++) {
 
-				if (enemyFollowers[i].pos.y <= 600.0f && enemyFollowers[i].isAlive) {
+				if (enemyFollowers[i].pos.y <= 632.0f && enemyFollowers[i].isAlive) {
 					enemyFollowers[i].pos.y += enemyFollowers[i].speed;
 				}
 
@@ -705,6 +727,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 					}
 				}
 
+				if (enemyFollowers[i].isAlive) {
+					playerDistance = collision((enemyFollowers[i].pos.x - player.pos.x), (enemyFollowers[i].pos.y - player.pos.y));
+				}
+				if (playerDistance <= 64 + player.radius) {
+					if (ivincibleFlag == false) {
+						life--;
+						ivincibleFlag = true;
+					}
+				}
 
 			}
 
@@ -752,12 +783,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameShene = GAMEOVER;
 			}
 
-			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
-				enemy.pos.x = 1000.0f;
-				motionCount = 0;
-				gameShene = GAMErizadoman;
-			}*/
-
+			
 			mahouCount = ++mahouCount % 60;
 
 			break;
@@ -904,10 +930,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameShene = GAMEOVER;
 			}
 
-			/*if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
-				enemy.pos.x = 1000.0f;
-				gameShene = GAMEdoragon2;
-			}*/
+			
 
 			break;
 		case GAMEdoragon2:
@@ -1188,8 +1211,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//子供
 			for (int i = 0; i < 5; i++) {
 				if (enemyFollowers[i].isAlive) {
-					Novice::DrawSprite(static_cast<int>(enemyFollowers[i].pos.x),
-						static_cast<int>(enemyFollowers[i].pos.y), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
+					Novice::DrawSprite(static_cast<int>(enemyFollowers[i].pos.x-32),
+						static_cast<int>(enemyFollowers[i].pos.y-32), kodomogoburinnhandle, 1.0f, 1.0f, 0.0f, WHITE);
 				}
 			}
 			
