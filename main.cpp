@@ -246,6 +246,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	mouse.direction.x = 0;
 	mouse.direction.y = 0;
 
+	//BGM
+	int bgmHandle= Novice::LoadAudio("./Resources/Mirroring.mp3");
+	int playHandle = -1;
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -259,6 +262,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓更新処理ここから
 		///
+		
+		if (!Novice::IsPlayingAudio(playHandle) || playHandle == -1) {
+			playHandle = Novice::PlayAudio(bgmHandle, true, 0.4f);
+		}
+		
 		switch (gameShene){
 		case TITLE:
 			life = 3;
@@ -555,6 +563,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				enemyLife = 100 + level * 10;
 				life = 3;
 				theta = float(M_PI) / 30.0f;
+				enemy.speed = 5.0f;
 				gameShene = GAMEgoburinn;
 
 
@@ -965,6 +974,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			}
 
+			if (motionCount > 360) {
+				for (int i = 0; i < 20; i++) {
+					if (enemyAttack[i].isBulletShot == false) {
+						enemyAttack[i].isBulletShot = true;
+						enemyAttack[i].pos.x = enemy.pos.x;
+						enemyAttack[i].pos.y = enemy.pos.y;
+					}
+					if (enemyAttack[i].isBulletShot) {
+						enemyAttack[i].pos.y += enemyAttack[i].speed;
+						enemyAttack[i].pos.x -= enemyAttack[i].speed + i * 5;
+
+					}
+
+					playerDistance = collision((enemyAttack[i].pos.x - player.pos.x), (enemyAttack[i].pos.y - player.pos.y));
+					if (playerDistance <= 16 + player.radius) {
+
+						enemyAttack[i].isBulletShot = false;
+
+						life = life - 1;
+					}
+				}
+			}
+
+
 			if (motionCount >= 550) {
 				
 				enemy.pos.y = 600.0f;
@@ -1154,6 +1187,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//ドラゴン２
 			Novice::ScreenPrintf(0, 0, "DORAGON2");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+
+			for (int i = 0; i < 20; i++) {
+				if (enemyAttack[i].isBulletShot) {
+					Novice::DrawSprite(static_cast<int>(enemyAttack[i].pos.x - 16), static_cast<int>(enemyAttack[i].pos.y - 16),
+						bressHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
 
 			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
