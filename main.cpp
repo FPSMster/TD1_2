@@ -170,7 +170,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	float playerDistance = collision((enemy.pos.x - player.pos.x), (enemy.pos.y - player.pos.y));
 
 	//敵のスポーン
-	
+
 	/*enum Boss {
 		Boss1,
 		Boss2,
@@ -223,8 +223,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	bressHandle[3] = Novice::LoadTexture("./Resources./doragonnBress4.png");
 
 	//弾の初期化
-	Bullet bullet[8];
-	for (int i = 0; i < 8; i++) {
+	Bullet bullet[3];
+	for (int i = 0; i < 3; i++) {
 		bullet[i].pos.x = -128;
 		bullet[i].pos.y = -128;
 		bullet[i].radius = 32;
@@ -296,7 +296,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 3; i++) {
 						if (!bullet[i].isShoot) {
 							bullet[i].isShoot = true;
 							bullet[i].pos.x = player.pos.x;
@@ -317,7 +317,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
 					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
@@ -457,7 +457,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 3; i++) {
 						if (!bullet[i].isShoot) {
 							bullet[i].isShoot = true;
 							bullet[i].pos.x = player.pos.x;
@@ -476,7 +476,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
 					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
@@ -593,7 +593,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 3; i++) {
 						if (!bullet[i].isShoot) {
 							bullet[i].isShoot = true;
 							bullet[i].pos.x = player.pos.x;
@@ -612,7 +612,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
 					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
@@ -740,7 +740,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 3; i++) {
 						if (!bullet[i].isShoot) {
 							bullet[i].isShoot = true;
 							bullet[i].pos.x = player.pos.x;
@@ -759,7 +759,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
 					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
@@ -881,7 +881,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			if (Novice::IsTriggerMouse(0)) {
 				if (player.bulletCoolTime <= 0) {
-					for (int i = 0; i < 8; i++) {
+					for (int i = 0; i < 3; i++) {
 						if (!bullet[i].isShoot) {
 							bullet[i].isShoot = true;
 							bullet[i].pos.x = player.pos.x;
@@ -900,7 +900,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					bullet[i].pos.x += bullet[i].speed * bullet[i].direction.x;
 					bullet[i].pos.y += bullet[i].speed * bullet[i].direction.y;
@@ -1044,7 +1044,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
@@ -1068,7 +1068,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "OOKAMI");
 			Novice::ScreenPrintf(0, 20, "%d", life);
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
@@ -1086,7 +1086,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			//
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
@@ -1118,7 +1118,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount/15],1.0f,1.0f, 0.0f, WHITE);
@@ -1142,7 +1142,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::ScreenPrintf(0, 0, "DORAGON2");
 			Novice::ScreenPrintf(0, 20, "%d", motionCount);
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
 					Novice::DrawSprite(static_cast<int>(bullet[i].pos.x - bullet[i].radius), static_cast<int>(bullet[i].pos.y - bullet[i].radius),
 						mahouHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
