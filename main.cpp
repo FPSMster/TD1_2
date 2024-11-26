@@ -1132,15 +1132,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		switch (gameShene) {
 		case TITLE:
-			Novice::ScreenPrintf(0, 0, "TITLE");
+			/*Novice::ScreenPrintf(0, 0, "TITLE");*/
 			break;
 
 		case GAMEdoragon:
 
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
-			Novice::ScreenPrintf(0, 0, "DORAGON");
-			Novice::ScreenPrintf(0, 20, "%d", life);
+			/*Novice::ScreenPrintf(0, 0, "DORAGON");
+			Novice::ScreenPrintf(0, 20, "%d", life);*/
 			for (int i = 0; i < 20; i++) {
 				if (enemyAttack[i].isBulletShot) {
 					Novice::DrawSprite(static_cast<int>(enemyAttack[i].pos.x - 16), static_cast<int>(enemyAttack[i].pos.y - 16),
@@ -1171,8 +1171,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMEookami:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//狼
-			Novice::ScreenPrintf(0, 0, "OOKAMI");
-			Novice::ScreenPrintf(0, 20, "%d", life);
+			/*Novice::ScreenPrintf(0, 0, "OOKAMI");
+			Novice::ScreenPrintf(0, 20, "%d", life);*/
 
 			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
@@ -1191,7 +1191,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMEgoburinn:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//
-			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			/*Novice::ScreenPrintf(0, 20, "%d", motionCount);*/
 
 			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
@@ -1205,7 +1205,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 
 			//ゴブリン
-			Novice::ScreenPrintf(0, 0, "GOBURINN");
+			/*Novice::ScreenPrintf(0, 0, "GOBURINN");*/
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
 				static_cast<int>(enemy.pos.y - 64.0f), goburinhanndle, 1.0f, 1.0f, 0.0f, WHITE);
 			//子供
@@ -1223,8 +1223,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//リザードマン
-			Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
-			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			/*Novice::ScreenPrintf(0, 0, "RIZA-DOMAN");
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);*/
 
 			for (int i = 0; i < 3; i++) {
 				if (bullet[i].isShoot) {
@@ -1248,8 +1248,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		case GAMEdoragon2:
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			//ドラゴン２
-			Novice::ScreenPrintf(0, 0, "DORAGON2");
-			Novice::ScreenPrintf(0, 20, "%d", motionCount);
+			/*Novice::ScreenPrintf(0, 0, "DORAGON2");
+			Novice::ScreenPrintf(0, 20, "%d", motionCount);*/
 
 			for (int i = 0; i < 20; i++) {
 				if (enemyAttack[i].isBulletShot) {
@@ -1279,7 +1279,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			
 			break;
 		case GAMEOVER:
-			Novice::ScreenPrintf(0, 0, "GAMEOVER");
+			/*Novice::ScreenPrintf(0, 0, "GAMEOVER");*/
 			break;
 		}
 
