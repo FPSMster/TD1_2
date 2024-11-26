@@ -196,7 +196,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//クロスヘア
 	int pointHandle = Novice::LoadTexture("./Resources./pointo.png");
 	//プレイヤー
-	int playerHandle = Novice::LoadTexture("./Resources./player.png");
+	int playerHidariHandle = Novice::LoadTexture("./Resources./playerHidari.png");
+	int playerMigiHandle = Novice::LoadTexture("./Resources./playerMigi.png");
 
 	int zangekiHandle[6];
 	zangekiHandle[0] = Novice::LoadTexture("./Resources./zangeki1.png");
@@ -1052,7 +1053,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16),playerHandle,1.0f,1.0f,  0.0f, WHITE);
+			if (player.pos.x >= mouse.posX) {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			} else{
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			}
+
+			
+			
 
 
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x -64.0f),
@@ -1075,7 +1083,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			if (player.pos.x >= mouse.posX) {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			} else {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			}
+
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f+randX),
 				static_cast<int>(enemy.pos.y - 64.0f), ookamihandle, 1.0f, 1.0f, 0.0f, WHITE);
 			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
@@ -1093,8 +1106,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 			
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
-
+			if (player.pos.x >= mouse.posX) {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			} else {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			}
 
 			//ゴブリン
 			Novice::ScreenPrintf(0, 0, "GOBURINN");
@@ -1125,7 +1141,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			if (player.pos.x >= mouse.posX) {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			} else {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			}
 
 			
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 128.0f),
@@ -1149,7 +1169,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				}
 			}
 
-			Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			if (player.pos.x >= mouse.posX) {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			} else {
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+			}
 
 
 			Novice::DrawSprite(static_cast<int>(enemy.pos.x - 64.0f),
