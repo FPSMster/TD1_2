@@ -122,7 +122,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	for (int i = 0; i < 20; i++) {
 		enemyAttack[i].pos.x = 1000.0f;
 		enemyAttack[i].pos.y = 360.0f;
-		enemyAttack[i].speed = 20.0f;
+		enemyAttack[i].speed = 5.0f;
 		enemyAttack[i].isBulletShot = false;
 	}
 
@@ -319,7 +319,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			///ドラゴンの処理
 
-			
+			motionCount++;
 
 			if (theta <= 5*float(M_PI)) {
 				theta += float(M_PI) / 150.0f;
@@ -333,6 +333,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				theta = 0.0f;
 				
 			}
+
+			if (motionCount > 300) {
+				for (int i = 0; i < 20; i++) {
+					if (enemyAttack[i].isBulletShot == false) {
+						enemyAttack[i].isBulletShot = true;
+						enemyAttack[i].pos.x = enemy.pos.x;
+						enemyAttack[i].pos.y = enemy.pos.y;
+					}
+					if (enemyAttack[i].isBulletShot) {
+						enemyAttack[i].pos.y+=enemyAttack[i].speed;
+						enemyAttack[i].pos.x -= enemyAttack[i].speed + i*5 ;
+
+					}
+
+				}
+			}
+
+			if (motionCount >= 450) {
+				for (int i = 0; i < 20; i++) {
+					enemyAttack[i].isBulletShot = false;
+				}
+				motionCount = 0;
+			}
+
+
 			mahouCount = ++mahouCount % 60;
 
 
@@ -790,6 +815,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			Novice::DrawSprite(0, 0, backGroundHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
 			Novice::ScreenPrintf(0, 0, "DORAGON");
+
+			for (int i = 0; i < 20; i++) {
+				if (enemyAttack[i].isBulletShot) {
+					Novice::DrawSprite(static_cast<int>(enemyAttack[i].pos.x - 16), static_cast<int>(enemyAttack[i].pos.y - 16),
+						bressHandle[mahouCount / 15], 1.0f, 1.0f, 0.0f, WHITE);
+				}
+			}
 
 			for (int i = 0; i < 8; i++) {
 				if (bullet[i].isShoot) {
