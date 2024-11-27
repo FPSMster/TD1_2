@@ -194,6 +194,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	int playerHidariHandle = Novice::LoadTexture("./Resources./playerHidari.png");
 	int playerMigiHandle = Novice::LoadTexture("./Resources./playerMigi.png");
 
+	int titleHandle = Novice::LoadTexture("./Resources./title.png");
+	int scoreHandle = Novice::LoadTexture("./Resources./gameover.png");
+
 	int zangekiHandle[6];
 	zangekiHandle[0] = Novice::LoadTexture("./Resources./zangeki1.png");
 	zangekiHandle[1] = Novice::LoadTexture("./Resources./zangeki2.png");
@@ -256,6 +259,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	//BGM
 	int bgmHandle= Novice::LoadAudio("./Resources/Mirroring.mp3");
 	int playHandle = -1;
+
+	//SCORE
+	int isScore = false;
+	int score = 0;
+
+	int numberHandle[10];
+	numberHandle[0] = Novice::LoadTexture("./Resources/0.png");
+	numberHandle[1] = Novice::LoadTexture("./Resources/1.png");
+	numberHandle[2] = Novice::LoadTexture("./Resources/2.png");
+	numberHandle[3] = Novice::LoadTexture("./Resources/3.png");
+	numberHandle[4] = Novice::LoadTexture("./Resources/4.png");
+	numberHandle[5] = Novice::LoadTexture("./Resources/5.png");
+	numberHandle[6] = Novice::LoadTexture("./Resources/6.png");
+	numberHandle[7] = Novice::LoadTexture("./Resources/7.png");
+	numberHandle[8] = Novice::LoadTexture("./Resources/8.png");
+	numberHandle[9] = Novice::LoadTexture("./Resources/9.png");
+
+	int numberArray[3]{};
+
+	numberArray[0] = score / 100;
+	score %= 100;
+	numberArray[1] = score / 10;
+	score %= 10;
+	numberArray[2] = score / 1;
+	score %= 1;
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -472,7 +500,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				gameShene = CLEAR;
 			}*/
 			if (life <= 0) {
+				isScore = true;
 				gameShene = GAMEOVER;
+				
 			}
 			break;
 
@@ -604,6 +634,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				ivincibleFlag = false;
 			}
 			if (life <= 0) {
+				isScore = true;
 				gameShene = GAMEOVER;
 			}
 		
@@ -781,6 +812,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				ivincibleFlag = false;
 			}
 			if (life <= 0) {
+				isScore = true;
 				gameShene = GAMEOVER;
 			}
 
@@ -928,6 +960,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 				ivincibleFlag = false;
 			}
 			if (life <= 0) {
+				isScore = true;
 				gameShene = GAMEOVER;
 			}
 
@@ -1098,20 +1131,32 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			}
 
 			if (life <= 0) {
+			
 				gameShene = GAMEOVER;
+				isScore = true;
 			}
 
 
 			break;
-		case CLEAR:
-			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
-				gameShene = TITLE;
-			}
-			break;
+		
 		case GAMEOVER:
+			if (isScore) {
+				score = level;
+				
+				numberArray[0] = score / 100;
+				score %= 100;
+				numberArray[1] = score / 10;
+				score %= 10;
+				numberArray[2] = score / 1;
+				score %= 1;
+
+			}
+
 			if (keys[DIK_SPACE] && !preKeys[DIK_SPACE]) {
 				gameShene = TITLE;
 				life = 3;
+				score = 0;
+				level = 0;
 			}
 			break;
 		}
@@ -1134,6 +1179,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		switch (gameShene) {
 		case TITLE:
 			/*Novice::ScreenPrintf(0, 0, "TITLE");*/
+			Novice::DrawSprite(0, 0, titleHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			break;
 
 		case GAMEdoragon:
@@ -1295,12 +1341,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 			Novice::DrawSprite(mouse.posX - 24, mouse.posY - 24, pointHandle, 1.0f, 1.0f, 0.0f, WHITE);
 
-			break;
-		case CLEAR:
+			
 			
 			break;
 		case GAMEOVER:
+
 			/*Novice::ScreenPrintf(0, 0, "GAMEOVER");*/
+			Novice::DrawSprite(0, 0, scoreHandle, 1.0f, 1.0f, 0.0f, WHITE);
+
+			for (int i = 0; i < 3; i++){
+				Novice::DrawSprite(250+i*32, 500, numberHandle[numberArray[i]], 1.0f, 1.0f, 0.0f, WHITE);
+			}
 			break;
 		}
 
