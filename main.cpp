@@ -305,6 +305,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		switch (gameShene){
 		case TITLE:
 			life = 3;
+			level = 0;
 			enemy.pos.x = 1000.0f;
 			enemy.pos.y = 600.0f;
 			theta = float(M_PI) / 15.0f;
