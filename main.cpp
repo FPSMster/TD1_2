@@ -3,7 +3,7 @@
 #include<math.h>
 #include<time.h>
 
-const char kWindowTitle[] = "GC1B 03 クドウ　マコト　タイトル";
+const char kWindowTitle[] = "5243_BOSS BATTLES極限の闘い";
 
 struct Vector2 {
 	float x;
@@ -1333,7 +1333,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			if (player.pos.x >= mouse.posX) {
 				Novice::DrawSprite(static_cast<int>(player.pos.x - 16+randX), static_cast<int>(player.pos.y - 16), playerHidariHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			} else {
-				Novice::DrawSprite(static_cast<int>(player.pos.x - 16), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
+				Novice::DrawSprite(static_cast<int>(player.pos.x - 16+randX), static_cast<int>(player.pos.y - 16), playerMigiHandle, 1.0f, 1.0f, 0.0f, WHITE);
 			}
 
 
